@@ -6,46 +6,97 @@ using System;
 namespace Anagram.Tests
 {
   [TestClass]
-  public class ScramblerTest : IDisposable
+  public class AnagramSearchTest
   {
-    public void Dispose()
+    [TestMethod]
+    public void AnagramSearchConstructor_CreatesNewInstanceOfAnagramSearch_AnagramSearch()
     {
-      Scrambler.ClearAll();
+      string expectedWord = "ant";
+      List<string> expectedListOfWords = new List<string> {"ant"};
+      AnagramSearch newAnagramSearch = new AnagramSearch(expectedWord, expectedListOfWords);
+      Assert.AreEqual(typeof(AnagramSearch), newAnagramSearch.GetType());
     }
 
     [TestMethod]
-    public void ListOfScrambles_ReturnAnEmptyString_EmptyList()
+    public void GetGivenWord_ReturnsTheValueOfAnagramSearchPropertyGivenWord_String()
     {
-      List<string> newList = new List<string> {};
-      string testWord = "";
-      List<string> testList = new List<string> {};
-      Scrambler newAnagram = new Scrambler(testWord, testList);
+      string expectedWord = "ant";
+      List<string> expectedListOfWords = new List<string> {"ant"};
+      AnagramSearch newAnagramSearch = new AnagramSearch(expectedWord, expectedListOfWords);
 
-      List<string> result = newAnagram.ListOfScrambles();
+      string actualWord = newAnagramSearch.GetGivenWord();
 
-      CollectionAssert.AreEqual(newList, result);
+      Assert.AreEqual(expectedWord, actualWord);
     }
 
     [TestMethod]
-    public void ListOfScrambles_ReturnAllPossibleArrangementsOfAThreeLetterWord_ListOfWords()
+    public void GetGivenListOfWords_ReturnsTheValueOfAnagramSearchPropertyGivenListOfWords_ListOfStrings()
     {
-      List<string> expectedList = new List<string> {"dog", "fish", "ant"};
-      string testWord = "tan";
-      Scrambler newAnagram = new Scrambler(testWord, expectedList);
+      string expectedWord = "ant";
+      List<string> expectedListOfWords = new List<string> {"ant"};
+      AnagramSearch newAnagramSearch = new AnagramSearch(expectedWord, expectedListOfWords);
 
-      List<string> actualList = newAnagram.ListOfScrambles();
+      List<string> actualListOfWords = newAnagramSearch.GetGivenListOfWords();
 
-      foreach (string word in expectedList)
-      {
-        Console.WriteLine("Output from expectedList test: " + expectedList);
-      }
-
-      foreach (string word in actualList)
-      {
-        Console.WriteLine("Output from second ListOfScrambles test: " + newAnagram.ListOfScrambles());
-      }
-
-      CollectionAssert.AreEqual(expectedList, actualList);
+      Assert.AreEqual(expectedListOfWords, actualListOfWords);
     }
+
+    [TestMethod]
+    public void DoesListContainAnagramsOfWord_ReturnsListOfWordsThatMatchTheWordExactly_ListOfStrings()
+    {
+      string wordToSearchFor = "ant";
+      List<string> expectedListOfMatchingWords = new List<string> {"ant", "ant"};
+      List<string> listOfWordsToSearch = new List<string> {"cat", "dog", "ant", "fish", "turtle", "ant"};
+
+      AnagramSearch newAnagramSearch = new AnagramSearch(wordToSearchFor, listOfWordsToSearch);
+
+      List<string> listOfMatchingWordsFound = newAnagramSearch.DoesListContainAnagramsOfWord();
+
+      CollectionAssert.AreEqual(expectedListOfMatchingWords, listOfMatchingWordsFound);
+    }
+
+    [TestMethod]
+    public void DoesListContainAnagramsOfWord_ReturnsListOfWordsThatAreAnagramsOfTheWord_ListOfStrings()
+    {
+      string wordToSearchFor = "ant";
+      List<string> expectedListOfMatchingWords = new List<string> {"tan"};
+      List<string> listOfWordsToSearch = new List<string> {"tan"};
+
+      AnagramSearch newAnagramSearch = new AnagramSearch(wordToSearchFor, listOfWordsToSearch);
+
+      List<string> listOfMatchingWordsFound = newAnagramSearch.DoesListContainAnagramsOfWord();
+
+      CollectionAssert.AreEqual(expectedListOfMatchingWords, listOfMatchingWordsFound);
+    }
+
+    // [TestMethod]
+    // public void CompareWordToList_ReturnAnEmptyListOfStrings_EmptyListOfStrings()
+    // {
+    //   List<string> newList = new List<string> {};
+    //   string testWord = "";
+    //   List<string> testList = new List<string> {};
+    //   AnagramSearch newAnagramSearch = new AnagramSearch(testWord, testList);
+    //
+    //   List<string> result = newAnagramSearch.ListOfScrambles();
+    //
+    //   CollectionAssert.AreEqual(newList, result);
+    // }
+
+    // [TestMethod]
+    // public void ListOfScrambles_ReturnGivenListOfWords_ListOfWords()
+    // {
+    //   List<string> expectedList = new List<string> {"ant"};
+    //
+    //   string testWord = "ant";
+    //
+    //   Scrambler newAnagram = new Scrambler(testWord, expectedList);
+    //
+    //   List<string> actualList = newAnagram.ListOfScrambles();
+    //   foreach (string word in actualList)
+    //   {
+    //     Console.WriteLine("Actual list: " + actualList[0]);
+    //   }
+    //   CollectionAssert.AreEqual(expectedList, actualList);
+    // }
   }
 }
